@@ -23,7 +23,7 @@ CREATE TABLE
             email ~* '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$'
         ),
         CONSTRAINT "french_phone" CHECK (
-            phone ~* '^(0|+33)[1-9]( ?\d{2}){4}$'
+            phone ~* '^[0-9]{10}$'
         ),
         CONSTRAINT "firstname_and_firstname_without_number" CHECK (
             "firstname" ~* '^[a-zA-ZÀ-ÿ-]+$'
