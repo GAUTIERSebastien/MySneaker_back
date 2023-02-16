@@ -13,7 +13,7 @@ CREATE TABLE
 CREATE TABLE
     "user" (
         "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-        "id_role" int NOT NULL REFERENCES role(id),
+        "id_role" int NOT NULL REFERENCES "role"(id),
         "email" TEXT UNIQUE NOT NULL,
         "password" TEXT NOT NULL,
         "phone" TEXT,
@@ -72,11 +72,11 @@ CREATE TABLE
     "order_line" (
         "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
         "id_order" INT NOT NULL REFERENCES "order"(id),
-        "id_product" INT NOT NULL REFERENCES product(id),
+        "id_product" INT NOT NULL REFERENCES "product"(id),
         "quantity" INT NOT NULL,
         "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
         "updated_at" TIMESTAMPTZ,
-        CONSTRAINT "quantity_not_equal_to_zero" CHECK (quantity >= 1)
+        CONSTRAINT "quantity_not_equal_to_zero" CHECK ("quantity" >= 1)
     );
 
 CREATE TABLE
@@ -85,14 +85,14 @@ CREATE TABLE
         "label" INT NOT NULL,
         "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
         "updated_at" TIMESTAMPTZ,
-        CONSTRAINT "size_can_be_less_than_16" CHECK (label >= 16)
+        CONSTRAINT "size_can_be_less_than_16" CHECK ("label" >= 16)
     );
 
 CREATE TABLE
     "size_to_product" (
         "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-        "id_size" INT NOT NULL REFERENCES size(id),
-        "id_product" INT NOT NULL REFERENCES product(id),
+        "id_size" INT NOT NULL REFERENCES "size"(id),
+        "id_product" INT NOT NULL REFERENCES "product"(id),
         "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
         "updated_at" TIMESTAMPTZ
     );

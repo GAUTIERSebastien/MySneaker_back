@@ -1,4 +1,4 @@
 %syntax-version=1.0.0
 %project=mygreensneaker
 
-createDatabase 2023-02-15T13:31:21Z alexandre cabarez <alexandre.cabarez@gmail.com> # crÃ©ation de la bdd
+init 2023-02-16T14:36:58Z alexandre cabarez <alexandre.cabarez@gmail.com> # create DB

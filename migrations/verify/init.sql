@@ -1,4 +1,4 @@
--- Verify mygreensneaker:createDatabase on pg
+-- Verify mygreensneaker:init on pg
 
 BEGIN;
 
