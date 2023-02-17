@@ -1,4 +1,4 @@
-const client = require('../database');
+const pool = require('../database');
 
 const userDatamapper = {
   async getOneUser(email) {
@@ -18,7 +18,7 @@ const userDatamapper = {
       WHERE "user"."email" = $1`,
       values: [email],
     };
-    const result = await client.query(preparedQuerry);
+    const result = await pool.query(preparedQuerry);
     return result.rows[0];
   },
 
