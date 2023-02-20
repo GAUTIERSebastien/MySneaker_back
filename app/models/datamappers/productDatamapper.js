@@ -26,5 +26,4 @@ const productDatamapper = {
     return null;
   },
 };
-// await client.query(`SELECT * FROM "product" WHERE "id" = ${targetId}`);
 module.exports = productDatamapper;
