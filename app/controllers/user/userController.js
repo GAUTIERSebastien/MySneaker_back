@@ -1,4 +1,3 @@
-const userDatamapper = require('../../models/datamappers/userDatamapper');
 const userServices = require('../../services/userServices');
 
 const userController = {
@@ -10,10 +9,9 @@ const userController = {
       const user = await userServices.CheckUser(email, password);
       res.json(user);
     } catch (error) {
-      res.render();
+      console.error(error);
     }
   },
-
 };
 
 module.exports = userController;

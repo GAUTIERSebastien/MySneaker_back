@@ -5,7 +5,6 @@ const productController = {
     const allProducts = await productDatamapper.getAllProducts();
     res.json(allProducts);
   },
-
 };
 
 module.exports = productController;
