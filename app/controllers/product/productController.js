@@ -1,9 +1,13 @@
+const productDatamapper = require('../../models/datamappers/productDatamapper');
+
+
+
+
 const productController = {
-
   async getAllProducts(req, res) {
-    res.send('test');
+    const allProducts = await productDatamapper.getAllProducts();
+    res.json(allProducts);
   },
-
 };
 
 module.exports = productController;
