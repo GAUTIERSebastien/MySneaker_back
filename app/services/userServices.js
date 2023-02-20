@@ -1,19 +1,41 @@
+require('dotenv').config();
+const emailValidator = require('email-validator');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const userDatamapper = require('../models/datamappers/userDatamapper');
 
 const userServices = {
-  async CheckUser(email, password, res) {
+  async CheckUser(email, password) {
+    // l'email n'est pas au bon format alors je modifie le code erreur et le renvoie
+    if (!emailValidator.validate(email)) {
+      return 400;
+    }
+    // sinon je cherche l'user dans la bdd en fonction de l'email qui m'a etais fourni
     const user = await userDatamapper.getOneUser(email);
+    // si je n'est pas d'email alors je renvoie le code d'erreur
     if (!user) {
-      const error = "l'utilisateur n'existe pas";
-      console.log('<< 401 UNAUTHORIZED');
-      return res.sendStatus(401);
+      return 401;
     }
-    if (password === user.password) {
+    // je compare le mot de passe avec bcrypt et celui stocker en bdd qui est crypté
+    const isMatchingPassword = await bcrypt.compare(password, user.password);
+    // si ça matche alors je supprime le mot de passe du json et le renvoie au controler
+    if (isMatchingPassword) {
       Reflect.deleteProperty(user, 'password');
-      return user;
+      const token = jwt.sign({
+        email: user.email,
+        id_role: user.id_role,
+        phone: user.phone,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        address: user.address,
+        zip_code: user.zip_code,
+        city: user.city,
+      }, process.env.SECRET_JWT, { expiresIn: '1h' });
+
+      return token;
     }
-    const error = "le mot de passe n'est pas correct";
-    return error;
+    // sinon je renvoie erreur 401 au controller
+    return 401;
   },
 
 };
