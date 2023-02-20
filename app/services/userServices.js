@@ -1,8 +1,8 @@
+require('dotenv').config();
 const emailValidator = require('email-validator');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const userDatamapper = require('../models/datamappers/userDatamapper');
-const config = require('../../configJwt');
 
 const userServices = {
   async CheckUser(email, password) {
@@ -30,7 +30,7 @@ const userServices = {
         address: user.address,
         zip_code: user.zip_code,
         city: user.city,
-      }, config.jwtSecret, { expiresIn: '1h' });
+      }, process.env.SECRET_JWT, { expiresIn: '1h' });
 
       return token;
     }
