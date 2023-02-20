@@ -8,7 +8,7 @@ const app = express();
 const router = require('./app/routers');
 
 const port = process.env.PORT || 5000;
-
+//ajout des cors
 app.use(cors());
 
 app.use(express.json());
