@@ -5,6 +5,7 @@ const productController = {
     const allProducts = await productDatamapper.getAllProducts();
     res.json(allProducts);
   },
+// Get one product
   async productDetails(req, res) {
     const targetId = Number(req.params.id);
     const foundProduct = await productDatamapper.getOneProductById(targetId);
