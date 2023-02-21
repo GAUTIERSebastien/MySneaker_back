@@ -4,6 +4,7 @@ const userDatamapper = {
   async getOneUser(email) {
     const preparedQuerry = {
       text: `SELECT 
+      "user"."id",
       "user"."email",
       "user"."id_role",
       "user"."password",

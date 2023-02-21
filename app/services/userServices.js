@@ -1,7 +1,6 @@
-require('dotenv').config();
 const emailValidator = require('email-validator');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+
 const userDatamapper = require('../models/datamappers/userDatamapper');
 
 const userServices = {
@@ -21,18 +20,8 @@ const userServices = {
     // si ça matche alors je supprime le mot de passe du json et le renvoie au controler
     if (isMatchingPassword) {
       Reflect.deleteProperty(user, 'password');
-      const token = jwt.sign({
-        email: user.email,
-        id_role: user.id_role,
-        phone: user.phone,
-        firstname: user.firstname,
-        lastname: user.lastname,
-        address: user.address,
-        zip_code: user.zip_code,
-        city: user.city,
-      }, process.env.SECRET_JWT, { expiresIn: '1h' });
 
-      return token;
+      return user;
     }
     // sinon je renvoie erreur 401 au controller
     return 401;

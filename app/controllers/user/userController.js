@@ -1,3 +1,5 @@
+require('dotenv').config();
+const jwt = require('jsonwebtoken');
 const userServices = require('../../services/userServices');
 
 const userController = {
@@ -14,10 +16,25 @@ const userController = {
       if (user === 400) {
         return res.status(400).send('le format de l\'email n\'est pas correct');
       }
-      res.json(user);
+      console.log(user);
+      const token = jwt.sign({
+        id: user.id,
+      }, process.env.SECRET_JWT, { expiresIn: '1h' });
+      res.json({
+        logged: true,
+        email: user.email,
+        id_role: user.id_role,
+        phone: user.phone,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        address: user.address,
+        zip_code: user.zip_code,
+        city: user.city,
+        token,
+      });
     } catch (error) {
       console.error(error);
-      res.status(500).render('erreur lié a la bdd');
+      res.status(500).send('erreur lié a la bdd');
     }
   },
 };
