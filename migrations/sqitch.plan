@@ -2,3 +2,4 @@
 %project=mygreensneaker
 
 init 2023-02-16T14:36:58Z alexandre cabarez <alexandre.cabarez@gmail.com> # create DB
+crudUser 2023-02-21T13:58:20Z alexandre cabarez <alexandre.cabarez@gmail.com> # modification de la table user pour le champ role_id

@@ -37,6 +37,17 @@ const userController = {
       res.status(500).send('erreur lié a la bdd');
     }
   },
+  // méthode pour création utilisateur
+  signup: async (req, res) => {
+    // je récupère les infos envoyé par le front
+    const newUser = req.body;
+    const result = await userServices.CheckUserAndAdd(newUser);
+    if (result === 200) {
+      res.status(200).send('l\'utilisateur est bien enregistré');
+    } else {
+      res.status(400).send('les données saisie sont incorrect');
+    }
+  },
 };
 
 module.exports = userController;

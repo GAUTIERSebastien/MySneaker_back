@@ -1,5 +1,6 @@
 const emailValidator = require('email-validator');
 const bcrypt = require('bcrypt');
+require('dotenv').config();
 
 const userDatamapper = require('../models/datamappers/userDatamapper');
 
@@ -26,7 +27,33 @@ const userServices = {
     // sinon je renvoie erreur 401 au controller
     return 401;
   },
-
+  async CheckUserAndAdd(user) {
+    // je vérifie si l'email est au bon format
+    if (!emailValidator.validate(user.email)) {
+      return 400;
+    }
+    // je vérifie si les 2 champs email correcpondent et les mot de passe
+    if (user.email !== user.confirmEmail || user.password !== user.confirmPassword) {
+      return 400;
+    }
+    // je vérifie si champs zip_code et phone sont bien des chiffre
+    if (isNaN(user.zip_code) || isNaN(user.phone)) {
+      return 400;
+    }
+    const saltRounds = parseInt(process.env.SALTROUND, 10);
+    const hashedPassword = await bcrypt.hash(user.password, saltRounds);
+    const idUser = await userDatamapper.putOneUser(user, hashedPassword);
+    // console.log(idUser);
+    if (!idUser) {
+      return 400;
+    }
+    // const formatedId = parseInt(idUser.id, 10);
+    const address = await userDatamapper.addAddressFromUserId(user, idUser.id);
+    if (!address) {
+      return 400;
+    }
+    return 200;
+  },
 };
 
 module.exports = userServices;
