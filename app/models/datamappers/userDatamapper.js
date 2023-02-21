@@ -22,6 +22,35 @@ const userDatamapper = {
     const result = await pool.query(preparedQuerry);
     return result.rows[0];
   },
+  async putOneUser(user, password) {
+    const preparedQuerry = {
+      text: `INSERT INTO "user"(
+        "email",
+        "password",
+        "phone",
+        "firstname",
+        "lastname")
+        VALUES
+      ($1,$2,$3,$4,$5)
+      RETURNING id;`,
+      values: [user.email, password, user.phone, user.firstname, user.lastname],
+    };
+
+    const result = await pool.query(preparedQuerry);
+
+    return result.rows[0];
+  },
+  async addAddressFromUserId(address, idUser) {
+    const preparedQuerry = {
+      text: `INSERT INTO "address" 
+      ("address", "zip_code", "city", "id_user")
+       VALUES 
+       ($1,$2,$3,$4);`,
+      values: [address.address, address.zip_code, address.city, idUser],
+    };
+    await pool.query(preparedQuerry);
+    return 200;
+  },
 
 };
 
