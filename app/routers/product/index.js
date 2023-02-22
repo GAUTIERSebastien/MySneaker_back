@@ -7,6 +7,6 @@ productRouter.get('/products', productController.getAllProducts);
 
 productRouter.get('/products/:id([0-9]+)', productController.productDetails);
 
-productRouter.post('/products/:id/hide', productController.hideProduct);
+productRouter.post('/products/:id', productController.hideProduct);
 
 module.exports = productRouter;

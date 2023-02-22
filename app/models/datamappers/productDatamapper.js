@@ -28,13 +28,11 @@ const productDatamapper = {
 
   // Hide one product
   async hide(product) {
-    'product'.hidden = true;
-    'product'.updated_at = 'now()';
     const query = {
-      text: 'UPDATE "product" SET hidden = $1, updated_at = $2 WHERE id = $3 RETURNING *',
-      values: [product.hidden, product.updated_at, product.id],
+      text: 'UPDATE "product" SET "hidden" = true WHERE id = $1 RETURNING *',
+      values: [product.id],
     };
-    const { rows } = await client.query(query);
+    const rows = await client.query(query);
     return rows[0];
   },
 };

@@ -1,6 +1,4 @@
--- Deploy mygreensneaker:hiddenProduct to pg
-
-BEGIN;
+Deploy mygreensneaker:hiddenProduct to pg BEGIN;
 
 ALTER TABLE "product"
 ADD

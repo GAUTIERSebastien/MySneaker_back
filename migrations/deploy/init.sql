@@ -22,9 +22,7 @@ CREATE TABLE
         CONSTRAINT "good_email" CHECK (
             email ~* '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$'
         ),
-        CONSTRAINT "french_phone" CHECK (
-            phone ~* '^[0-9]{10}$'
-        ),
+        CONSTRAINT "french_phone" CHECK (phone ~* '^[0-9]{10}$'),
         CONSTRAINT "firstname_and_firstname_without_number" CHECK (
             "firstname" ~* '^[a-zA-ZÀ-ÿ-]+$'
         ),
@@ -62,6 +60,7 @@ CREATE TABLE
         "brand" TEXT NOT NULL,
         "price" NUMERIC(10, 2) NOT NULL,
         "image" TEXT NOT NULL,
+        "hidden" BOOLEAN NOT NULL DEFAULT FALSE,
         "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
         "updated_at" TIMESTAMPTZ
     );
