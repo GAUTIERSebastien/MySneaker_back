@@ -1,9 +1,11 @@
 -- Deploy mygreensneaker:crudUser to pg
 
-BEGIN;
+-- BEGIN;
 
-ALTER TABLE "user"
-ALTER COLUMN "id_user"
-SET DEFAULT 2;
+-- ALTER TABLE "user"
 
-COMMIT;
+-- ALTER COLUMN "id_user"
+
+-- SET DEFAULT 2;
+
+-- COMMIT;
