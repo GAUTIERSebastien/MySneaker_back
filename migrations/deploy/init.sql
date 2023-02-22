@@ -60,7 +60,6 @@ CREATE TABLE
         "brand" TEXT NOT NULL,
         "price" NUMERIC(10, 2) NOT NULL,
         "image" TEXT NOT NULL,
-        "hidden" BOOLEAN NOT NULL DEFAULT FALSE,
         "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
         "updated_at" TIMESTAMPTZ
     );
