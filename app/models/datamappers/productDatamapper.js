@@ -25,5 +25,17 @@ const productDatamapper = {
     // If the product does not exist
     return null;
   },
+
+  // Hide one product
+  async hide(product) {
+    'product'.hidden = true;
+    'product'.updated_at = 'now()';
+    const query = {
+      text: 'UPDATE "product" SET hidden = $1, updated_at = $2 WHERE id = $3 RETURNING *',
+      values: [product.hidden, product.updated_at, product.id],
+    };
+    const { rows } = await client.query(query);
+    return rows[0];
+  },
 };
 module.exports = productDatamapper;
