@@ -1,6 +1,11 @@
 const adminDatamapper = require('../../models/datamappers/adminDatamapper');
 
 const adminController = {
+  // Get all orders
+  async getAllOrders(req, res) {
+    const allorders = await adminDatamapper.getAllOrders();
+    res.json(allorders);
+  },
 
   // Get one product
   async productDetails(req, res) {
