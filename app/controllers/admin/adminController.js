@@ -34,6 +34,17 @@ const adminController = {
       return next(error);
     }
   },
+  // Create product
+  createProduct: async (req, res) => {
+    try {
+      const product = req.body;
+      const createdProduct = await adminDatamapper.create(product);
+      res.status(201).json(createdProduct);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Unable to create product' });
+    }
+  },
 };
 
 module.exports = adminController;

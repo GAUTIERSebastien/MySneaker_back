@@ -33,6 +33,17 @@ const adminDatamapper = {
     const rows = await client.query(query);
     return rows[0];
   },
+  // Create  product
+  create: async (product) => {
+    const query = {
+      text: `INSERT INTO product (title, description, brand, price, image)
+             VALUES ($1, $2, $3, $4, $5)
+             RETURNING *;`,
+      values: [product.title, product.description, product.brand, product.price, product.image],
+    };
+    const result = await client.query(query);
+    return result.rows[0];
+  },
 };
 
 module.exports = adminDatamapper;
