@@ -1,6 +1,14 @@
 const client = require('../database');
 
 const adminDatamapper = {
+  // Get all orders
+  async getAllOrders() {
+    const renderAllOrders = {
+      text: 'SELECT * FROM "order"',
+    };
+    const result = await client.query(renderAllOrders);
+    return result.rows;
+  },
   // Get one product
   getOneProductById: async (targetId) => {
     const preparedQuery = {
