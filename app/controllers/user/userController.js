@@ -29,6 +29,7 @@ const userController = {
         address: user.address,
         zip_code: user.zip_code,
         city: user.city,
+        id_role: user.id_role,
         token,
       });
     } catch (error) {
