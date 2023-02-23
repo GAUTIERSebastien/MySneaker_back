@@ -48,6 +48,17 @@ const userController = {
       res.status(400).send('les données saisie sont incorrect');
     }
   },
+  // méthode pour modifier le profil
+  modify: async (req, res) => {
+    // récupération des infos de modification de l'user
+    const user = req.body;
+    // récupération de l'id de l'user
+    const idUser = req.user.id;
+    const result = userServices.modifyUser(user, idUser);
+    if (result === 404) {
+      res.status(404).send('cette utilisateur n\'existe pas');
+    }
+  },
 };
 
 module.exports = userController;

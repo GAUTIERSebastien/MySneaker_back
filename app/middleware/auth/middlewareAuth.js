@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const middlewareAuth = {
   isLogged(req, res, next) {
     const authHeader = req.headers.token;
+
     if (authHeader) {
       const token = authHeader.split(' ')[1];
       try {
