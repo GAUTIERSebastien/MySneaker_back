@@ -54,6 +54,13 @@ const userServices = {
     }
     return 200;
   },
+
+  // méthode pour vérifier et modifié l'utilisateur
+  async modifyUser(newInfoUser, idUser) {
+    if (!idUser) {
+      return 404;
+    }
+  },
 };
 
 module.exports = userServices;
