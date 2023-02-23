@@ -19,11 +19,10 @@ const userController = {
       console.log(user);
       const token = jwt.sign({
         id: user.id,
+        id_role: user.id_role,
       }, process.env.SECRET_JWT, { expiresIn: '1h' });
       res.json({
-        logged: true,
         email: user.email,
-        id_role: user.id_role,
         phone: user.phone,
         firstname: user.firstname,
         lastname: user.lastname,
