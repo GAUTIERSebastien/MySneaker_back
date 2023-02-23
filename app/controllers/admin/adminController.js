@@ -2,6 +2,16 @@ const adminDatamapper = require('../../models/datamappers/adminDatamapper');
 
 const adminController = {
 
+  // Get one product
+  async productDetails(req, res) {
+    const targetId = Number(req.params.id);
+    const foundProduct = await adminDatamapper.getOneProductById(targetId);
+    if (!foundProduct) {
+      res.status(404).send('Le produit n\'existe pas!');
+    }
+    res.json(foundProduct);
+  },
+
   // Hide one product
   async hideProduct(req, res, next) {
     const targetId = Number(req.params.id);
