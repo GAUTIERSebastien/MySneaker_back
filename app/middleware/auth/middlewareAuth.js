@@ -1,4 +1,5 @@
 const express = require('express');
+require('dotenv').config();
 
 const middlewareAuth = {
   isLogged(req, res, next) {
@@ -7,7 +8,7 @@ const middlewareAuth = {
       if (authHeader) {
         const token = authHeader.split(' ')[1];
         try {
-          const decoded = jwt.verify(token, secretKey);
+          const decoded = jwt.verify(token, process.env.SECRET_JWT );
           console.log(decoded)
           req.user = decoded;
           next();
