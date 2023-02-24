@@ -8,19 +8,22 @@ const userController = {
     try {
       // je récupère l'email et le mot de passe qui a était envoyé
       const { email, password } = req.body;
+      //je demande a l'userService de chexk les info reçu
       const user = await userServices.CheckUser(email, password);
-
+      //si une l'utilisateur n'existe pas dans la bdd une erreur est envoyé
       if (user === 401) {
         return res.status(401).send('le nom d\'utilisateur ou le mot de passe ne correspondent pas');
       }
+      //si l'utilisateur a renseigné une adress email invalide un message d'erreur est renvoyé
       if (user === 400) {
         return res.status(400).send('le format de l\'email n\'est pas correct');
       }
-      console.log(user);
+      //si tout est correcte on créer un token jwt 
       const token = jwt.sign({
         id: user.id,
         id_role: user.id_role,
       }, process.env.SECRET_JWT, { expiresIn: '1h' });
+      //on renvoie les infos de l'user non sensible en clair et le token jwt
       res.json({
         email: user.email,
         phone: user.phone,
@@ -33,19 +36,28 @@ const userController = {
         token,
       });
     } catch (error) {
+      //si la bdd ne répond pas on renvoie une erreur
       console.error(error);
-      res.status(500).send('erreur lié a la bdd');
+      res.status(500).send(error);
     }
   },
   // méthode pour création utilisateur
   signup: async (req, res) => {
-    // je récupère les infos envoyé par le front
-    const newUser = req.body;
-    const result = await userServices.CheckUserAndAdd(newUser);
-    if (result === 200) {
-      res.status(200).send('l\'utilisateur est bien enregistré');
-    } else {
-      res.status(400).send('les données saisie sont incorrect');
+    try{
+      // je récupère les infos envoyé par le front
+      const newUser = req.body;
+      //j'envoie les infos a l'userService pour qu'il les controle
+      const result = await userServices.CheckUserAndAdd(newUser);
+      if (result === 200) {
+        //si tous c'est bien passé je renvoie un code 200 avec un message
+        res.status(200).send('l\'utilisateur est bien enregistré');
+      } else {
+        //si des information sont incorrects je renvoie un code 400 avec un message
+        res.status(400).send('les données saisie sont incorrect');
+      }
+      //si la bdd ne répond pas ou que les données saisie ne peuvent pas etre rentré dans la bdd alors je renvoie un code 500 avec le log de l'erreur
+    }catch(error){
+      res.status(500).send(error)
     }
   },
   // méthode pour modifier le profil

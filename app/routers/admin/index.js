@@ -1,14 +1,12 @@
 const express = require('express');
 const adminController = require('../../controllers/admin/adminController');
-
+const middlewareAuth= require('../../middleware/auth/middlewareAuth')
 const adminRouter = express.Router();
 
-adminRouter.get('/admin/products/:id', adminController.productDetails);
+//route pour créer un produit
+adminRouter.post('/products',middlewareAuth.isLogged,middlewareAuth.isAdmin, adminController.createProduct);
 
-adminRouter.get('/admin/order', adminController.getAllOrders);
-
-adminRouter.post('/products', adminController.createProduct);
-
-adminRouter.post('/admin/products/:id', adminController.hideProduct);
+//route pour modifier un produit
+adminRouter.post('/admin/products/:id',middlewareAuth.isLogged,middlewareAuth.isAdmin, adminController.hideProduct);
 
 module.exports = adminRouter;
