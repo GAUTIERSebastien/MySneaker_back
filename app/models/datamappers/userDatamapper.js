@@ -60,6 +60,50 @@ const userDatamapper = {
     return 200;
   },
 
+  async updateUser(user, idUser, password) {
+    const preparedQuerry = {
+      text: `UPDATE "user" SET
+      "firstname" = $1,
+      "lastname"= $2,
+      "phone"=$3,
+      "password" = $4
+      Where "id"=$5`,
+      values: [user.firstname, user.lastname, user.phone, password, idUser],
+    };
+    // je demande a la database d'envoie la requete ci-dessus
+    await pool.query(preparedQuerry);
+    // si tous est ok je renvoie un code 200
+    return 200;
+  },
+  async updateUserWithoutPassword(user, idUser) {
+    const preparedQuerry = {
+      text: `UPDATE "user" SET
+      "firstname" = $1,
+      "lastname"= $2,
+      "phone"= $3
+      WHERE "id"=$4`,
+      values: [user.firstname, user.lastname, user.phone, idUser],
+    };
+    // je demande a la database d'envoie la requete ci-dessus
+    await pool.query(preparedQuerry);
+    // si tous est ok je renvoie un code 200
+    return 200;
+  },
+  async updateAddress(idUser, user) {
+    const preparedQuerry = {
+      text: `UPDATE "address" SET
+      "address" = $1,
+      "zip_code"= $2,
+      "city"= $3
+      WHERE "id_user" = $4 `,
+      values: [user.address, user.zip_code, user.city, idUser],
+    };
+    // je demande a la database d'envoie la requete ci-dessus
+    await pool.query(preparedQuerry);
+    // si tous est ok je renvoie un code 200
+    return 200;
+  },
+
 };
 
 module.exports = userDatamapper;

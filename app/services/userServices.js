@@ -63,8 +63,25 @@ const userServices = {
 
   // méthode pour vérifier et modifié l'utilisateur
   async modifyUser(newInfoUser, idUser) {
-    if (!idUser) {
-      return 404;
+    console.log(newInfoUser)
+    if(isNaN(newInfoUser.zip_code) || isNaN(newInfoUser.phone) ){
+      return 400
+    }
+
+
+    if(!newInfoUser.password || newInfoUser.password.length == 0){
+      await userDatamapper.updateUserWithoutPassword(newInfoUser,idUser)
+      await userDatamapper.updateAddress(idUser,newInfoUser)
+    }else{
+      if(newInfoUser.password !== newInfoUser.confirmPassword){
+        return 400
+      }else{
+        const saltRounds = parseInt(process.env.SALTROUND, 10) 
+        const hashedPassword = await bcrypt.hash(newInfoUser.password, saltRounds)
+        await userDatamapper.updateUser(newInfoUser,idUser,hashedPassword)
+        await userDatamapper.updateAddress(idUser,newInfoUser)
+        return 200
+      }
     }
   },
 };

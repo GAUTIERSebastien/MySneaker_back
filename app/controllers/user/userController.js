@@ -32,7 +32,6 @@ const userController = {
         address: user.address,
         zip_code: user.zip_code,
         city: user.city,
-        id_role: user.id_role,
         token,
       });
     } catch (error) {
@@ -70,6 +69,10 @@ const userController = {
     if (result === 404) {
       res.status(404).send('cette utilisateur n\'existe pas');
     }
+    if (result === 400) {
+      res.status(400).send('les données saisies sont incorrectes');
+    }
+    res.send('test ok');
   },
 };
 
