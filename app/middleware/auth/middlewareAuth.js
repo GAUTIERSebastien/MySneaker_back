@@ -8,6 +8,7 @@ const middlewareAuth = {
 
     //on récupère le token jwt que le front nous renvoie
     const authHeader = req.headers.authorization;
+    
     // si un token existe 
     if (authHeader) {
       //je récupère uniquement de le token 

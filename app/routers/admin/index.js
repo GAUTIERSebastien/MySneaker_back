@@ -6,7 +6,7 @@ const adminRouter = express.Router();
 //route pour créer un produit
 adminRouter.post('/products',middlewareAuth.isLogged,middlewareAuth.isAdmin, adminController.createProduct);
 
-//route pour modifier un produit
-adminRouter.post('/admin/products/:id',middlewareAuth.isLogged,middlewareAuth.isAdmin, adminController.hideProduct);
+//route pour caché un produit
+adminRouter.post('/products/:id([0-9]+)',middlewareAuth.isLogged,middlewareAuth.isAdmin, adminController.hideProduct);
 
 module.exports = adminRouter;
