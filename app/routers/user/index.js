@@ -4,13 +4,13 @@ const middlewareAuth = require('../../middleware/auth/middlewareAuth');
 
 const router = express.Router();
 
-//route pour la connexion au site
+// route pour la connexion au site
 router.post('/login', userController.login);
 
 // route pour la création d'un compte
 router.post('/signup', userController.signup);
 
-//route pour modify un profil
+// route pour modify un profil
 router.patch('/modify', middlewareAuth.isLogged);
 
 module.exports = router;
