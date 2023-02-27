@@ -46,7 +46,7 @@ const adminDatamapper = {
       text: `INSERT INTO size_to_product (id_size, id_product)
       VALUES (
         (SELECT id FROM size WHERE label = $1),
-        (SELECT id FROM product ORDER BY created_at DESC LIMIT 1),
+        (SELECT id FROM product ORDER BY created_at DESC LIMIT 1)
       );`,
       values: [product.size],
     };
