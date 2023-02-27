@@ -10,9 +10,7 @@ router.post('/login', userController.login);
 // route pour la création d'un compte
 router.post('/signup', userController.signup);
 
-
-//route pour modify un profil
-router.patch('/', middlewareAuth.isLogged,userController.modify);
-
+// route pour modify un profil
+router.patch('/', middlewareAuth.isLogged, userController.modify);
 
 module.exports = router;
