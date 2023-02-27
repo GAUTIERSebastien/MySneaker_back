@@ -103,6 +103,15 @@ const userDatamapper = {
     // si tous est ok je renvoie un code 200
     return 200;
   },
+  async deleteUser(idUser) {
+    const preparedQuerry = {
+      text: 'DELETE FROM "user" WHERE "id"= $1',
+      values: [idUser],
+    };
+    await pool.query(preparedQuerry);
+
+    return 200;
+  },
 
 };
 
