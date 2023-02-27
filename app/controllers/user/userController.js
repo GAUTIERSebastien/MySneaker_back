@@ -32,6 +32,7 @@ const userController = {
         address: user.address,
         zip_code: user.zip_code,
         city: user.city,
+        id_role: user.id_role,
         token,
       });
     } catch (error) {
@@ -54,7 +55,8 @@ const userController = {
         // si des information sont incorrects je renvoie un code 400 avec un message
         res.status(400).send('les données saisie sont incorrect');
       }
-      // si la bdd ne répond pas ou que les données saisie ne peuvent pas etre rentré dans la bdd alors je renvoie un code 500 avec le log de l'erreur
+      // si la bdd ne répond pas ou que les données saisie ne peuvent pas etre rentré dans la bdd
+      // alors je renvoie un code 500 avec le log de l'erreur
     } catch (error) {
       res.status(500).send(error);
     }
@@ -73,6 +75,19 @@ const userController = {
       res.status(400).send('les données saisies sont incorrectes');
     }
     res.send('test ok');
+  },
+  // méthode pour supprimer un user de la bdd
+  delete: async (req, res) => {
+    const idUser = req.user.id;
+    try {
+      const result = userServices.delete(idUser);
+      if (result === 400) {
+        res.status(400).send('impossible de supprimer l\'utilisateur');
+      }
+      res.status(200).send('l\'utilisateur est bien supprimer');
+    } catch (error) {
+      res.status(500).send(error);
+    }
   },
 };
 

@@ -63,7 +63,9 @@ const userServices = {
 
   // méthode pour vérifier et modifié l'utilisateur
   async modifyUser(newInfoUser, idUser) {
+
     console.log(newInfoUser);
+
     if (isNaN(newInfoUser.zip_code) || isNaN(newInfoUser.phone)) {
       return 400;
     }
@@ -81,6 +83,10 @@ const userServices = {
       await userDatamapper.updateAddress(idUser, newInfoUser);
       return 200;
     }
+  },
+  async delete(idUser) {
+    const result = await userDatamapper.deleteUser(idUser);
+    return result;
   },
 };
 
