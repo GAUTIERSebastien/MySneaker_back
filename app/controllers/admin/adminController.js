@@ -4,7 +4,7 @@ const productDatamapper = require('../../models/datamappers/productDatamapper');
 const adminController = {
 
   // Hide one product
-  async hideProduct(req, res, next) {
+  async hideProduct(req, res) {
     // je récupère l'id du produit que je veux modifier
     const targetId = Number(req.params.id);
     try {
@@ -37,6 +37,17 @@ const adminController = {
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Unable to create product' });
+    }
+  },
+  updateProduct: async (req, res) => {
+    try {
+      const productId = req.params.id;
+      const updatedProduct = req.body;
+      const result = await adminDatamapper.updateProduct(productId, updatedProduct);
+      res.status(200).json(result);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error updating product' });
     }
   },
 };
