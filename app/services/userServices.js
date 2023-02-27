@@ -21,7 +21,7 @@ const userServices = {
     // si ça matche alors je supprime le mot de passe du json et le renvoie au controler
     if (isMatchingPassword) {
       Reflect.deleteProperty(user, 'password');
-      //et je renvoie les info de l'user
+      // et je renvoie les info de l'user
       return user;
     }
     // sinon je renvoie erreur 401 au controller
@@ -40,49 +40,51 @@ const userServices = {
     if (isNaN(user.zip_code) || isNaN(user.phone)) {
       return 400;
     }
-    //je transforme le saltRound en chiffre 
+    // je transforme le saltRound en chiffre
     const saltRounds = parseInt(process.env.SALTROUND, 10);
-    //je hash le mot de passe reçu
+    // je hash le mot de passe reçu
     const hashedPassword = await bcrypt.hash(user.password, saltRounds);
-    //et je push dans la bdd
+    // et je push dans la bdd
     const idUser = await userDatamapper.putOneUser(user, hashedPassword);
-    
+
     // a la suite de ce push je doit récupérer l'id de l'user créer si ce n'est pas le cas je revois au controller un code 400
     if (!idUser) {
       return 400;
     }
-    //grace a l'id de l'user , je peux renseigner son adresse
+    // grace a l'id de l'user , je peux renseigner son adresse
     const address = await userDatamapper.addAddressFromUserId(user, idUser.id);
-    //si je ne reçois rien, je renvoi un code 400
+    // si je ne reçois rien, je renvoi un code 400
     if (!address) {
       return 400;
     }
-    //sinon je renvoie un code 200
+    // sinon je renvoie un code 200
     return 200;
   },
 
   // méthode pour vérifier et modifié l'utilisateur
   async modifyUser(newInfoUser, idUser) {
-    console.log(newInfoUser)
-    if(isNaN(newInfoUser.zip_code) || isNaN(newInfoUser.phone) ){
-      return 400
+    if (isNaN(newInfoUser.zip_code) || isNaN(newInfoUser.phone)) {
+      return 400;
     }
 
-
-    if(!newInfoUser.password || newInfoUser.password.length == 0){
-      await userDatamapper.updateUserWithoutPassword(newInfoUser,idUser)
-      await userDatamapper.updateAddress(idUser,newInfoUser)
-    }else{
-      if(newInfoUser.password !== newInfoUser.confirmPassword){
-        return 400
-      }else{
-        const saltRounds = parseInt(process.env.SALTROUND, 10) 
-        const hashedPassword = await bcrypt.hash(newInfoUser.password, saltRounds)
-        await userDatamapper.updateUser(newInfoUser,idUser,hashedPassword)
-        await userDatamapper.updateAddress(idUser,newInfoUser)
-        return 200
+    if (!newInfoUser.password || newInfoUser.password.length == 0) {
+      await userDatamapper.updateUserWithoutPassword(newInfoUser, idUser);
+      await userDatamapper.updateAddress(idUser, newInfoUser);
+    } else {
+      if (newInfoUser.password !== newInfoUser.confirmPassword) {
+        return 400;
       }
+      const saltRounds = parseInt(process.env.SALTROUND, 10);
+      const hashedPassword = await bcrypt.hash(newInfoUser.password, saltRounds);
+      await userDatamapper.updateUser(newInfoUser, idUser, hashedPassword);
+      await userDatamapper.updateAddress(idUser, newInfoUser);
+      return 200;
     }
+  },
+
+  async delete(idUser) {
+    const result = await userDatamapper.deleteUser(idUser);
+    return result;
   },
 };
 
