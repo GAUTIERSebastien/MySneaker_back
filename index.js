@@ -16,6 +16,9 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 app.use(router);
 
+// Fichier accessible sans créer de route grâce au "public"
+app.use(express.static('./public'));
+
 app.listen(port, () => {
   console.log(`Server ready: http://localhost:${port}`);
 });
