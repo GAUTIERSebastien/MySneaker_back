@@ -32,6 +32,7 @@ const userController = {
         address: user.address,
         zip_code: user.zip_code,
         city: user.city,
+        id_role: user.id_role,
         token,
       });
     } catch (error) {
@@ -54,7 +55,8 @@ const userController = {
         // si des information sont incorrects je renvoie un code 400 avec un message
         res.status(400).send('les données saisie sont incorrect');
       }
-      // si la bdd ne répond pas ou que les données saisie ne peuvent pas etre rentré dans la bdd alors je renvoie un code 500 avec le log de l'erreur
+      // si la bdd ne répond pas ou que les données saisie ne peuvent pas etre rentré dans la bdd
+      // alors je renvoie un code 500 avec le log de l'erreur
     } catch (error) {
       res.status(500).send(error);
     }
