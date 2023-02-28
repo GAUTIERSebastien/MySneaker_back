@@ -68,13 +68,13 @@ const adminDatamapper = {
   updateProduct: async (productId, updatedProduct) => {
     const updateProduct = {
       text: `UPDATE product
-           SET title = $1,
-               description = $2,
-               brand = $3,
-               price = $4,
-               image = $5
-           WHERE id = $6
-           RETURNING *;`,
+         SET title = $1,
+             description = $2,
+             brand = $3,
+             price = $4,
+             image = $5
+         WHERE id = $6
+         RETURNING *;`,
       values: [updatedProduct.title,
         updatedProduct.description,
         updatedProduct.brand,
@@ -84,30 +84,28 @@ const adminDatamapper = {
     };
     const deleteSizesForProduct = {
       text: `DELETE FROM size_to_product
-           WHERE id_product = $1;`,
+         WHERE id_product = $1;`,
       values: [productId],
     };
     await client.query(updateProduct);
     await client.query(deleteSizesForProduct);
 
-    updatedProduct.sizes.forEach(async (size) => {
-      const insertSizeAndProduct = {
-        text: `INSERT INTO size_to_product (id_size, id_product)
-             VALUES (
-               (SELECT id FROM size WHERE label = $1),
-               $2
-             );`,
-        values: [size, productId],
-      };
-      await client.query(insertSizeAndProduct);
-    });
+    const insertSizeAndProductQueries = updatedProduct.sizes.map((size) => ({
+      text: `INSERT INTO size_to_product (id_size, id_product)
+           VALUES (
+             (SELECT id FROM size WHERE label = $1),
+             $2
+           );`,
+      values: [size, productId],
+    }));
+    await Promise.all(insertSizeAndProductQueries.map((query) => client.query(query)));
 
     const productWithSizes = {
       text: `SELECT product.*, size.label AS size_label
-           FROM product
-           JOIN size_to_product ON product.id = size_to_product.id_product
-           JOIN size ON size.id = size_to_product.id_size
-           WHERE product.id = $1;`,
+         FROM product
+         JOIN size_to_product ON product.id = size_to_product.id_product
+         JOIN size ON size.id = size_to_product.id_size
+         WHERE product.id = $1;`,
       values: [productId],
     };
     const result = await client.query(productWithSizes);
