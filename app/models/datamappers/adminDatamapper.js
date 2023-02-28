@@ -90,15 +90,15 @@ const adminDatamapper = {
     await client.query(updateProduct);
     await client.query(deleteSizesForProduct);
 
-    const insertSizeAndProductQueries = updatedProduct.sizes.map((size) => ({
+    const insertSizeAndProduct = {
       text: `INSERT INTO size_to_product (id_size, id_product)
-           VALUES (
-             (SELECT id FROM size WHERE label = $1),
-             $2
-           );`,
-      values: [size, productId],
-    }));
-    await Promise.all(insertSizeAndProductQueries.map((query) => client.query(query)));
+             VALUES (
+               (SELECT id FROM size WHERE label = $1),
+               $2
+             );`,
+      values: [updatedProduct.size, productId],
+    };
+    await client.query(insertSizeAndProduct);
 
     const productWithSizes = {
       text: `SELECT product.*, size.label AS size_label

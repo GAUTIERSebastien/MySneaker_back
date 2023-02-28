@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 const express = require('express');
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
@@ -13,14 +14,12 @@ const middlewareAuth = {
       // je récupère uniquement de le token
       const token = authHeader.split(' ')[1];
       try {
-
         // je décode le token en fonction avec la clé secrete je stock tous et passe au middlware suivant
 
         const decoded = jwt.verify(token, process.env.SECRET_JWT);
         req.user = decoded;
         next();
       } catch (err) {
-
         // si le token a été modifier ou corrumpu alors je renvoie une erreur et la requète s'arrete la
 
         res.status(401).json({ error: 'Token invalide' });
@@ -31,8 +30,6 @@ const middlewareAuth = {
     }
   },
   isAdmin(req, res, next) {
-
-
     // sinon l'id est autre que 1 ça veux dirre que l'user n'est pas admin
     const idRole = req.user.id_role;
     if (idRole === 1) {
