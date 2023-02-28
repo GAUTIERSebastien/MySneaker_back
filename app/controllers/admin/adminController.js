@@ -43,6 +43,7 @@ const adminController = {
     try {
       const productId = req.params.id;
       const updatedProduct = req.body;
+
       const result = await adminDatamapper.updateProduct(productId, updatedProduct);
       res.status(200).json(result);
     } catch (error) {

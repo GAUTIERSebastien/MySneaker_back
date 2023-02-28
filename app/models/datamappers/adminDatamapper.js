@@ -39,31 +39,13 @@ const adminDatamapper = {
     const createProduct = {
       text: `INSERT INTO product (title, description, brand, price, image)
              VALUES ($1, $2, $3, $4, $5)
-             RETURNING *;`,
+             RETURNING id;`,
       values: [product.title, product.description, product.brand, product.price, product.image],
     };
-    const insertSizeAndProduct = {
-      text: `INSERT INTO size_to_product (id_size, id_product)
-      VALUES (
-        (SELECT id FROM size WHERE label = $1),
-        (SELECT id FROM product ORDER BY created_at DESC LIMIT 1)
-      );`,
-      values: [product.size],
-    };
-    await client.query(createProduct);
-    await client.query(insertSizeAndProduct);
-
-    const sizeAndProductInJoin = {
-      text: `SELECT product.*, size.*
-             FROM product
-             JOIN size_to_product ON product.id = size_to_product.id_product
-             JOIN size ON size.id = size_to_product.id_size
-             WHERE product.id = (SELECT id FROM product ORDER BY created_at DESC LIMIT 1);`,
-    };
-    const result = await client.query(sizeAndProductInJoin);
-
-    return result.rows[0];
+    const idProduct = await client.query(createProduct);
+    return idProduct;
   },
+
   // Update product
   updateProduct: async (productId, updatedProduct) => {
     const updateProduct = {
@@ -82,37 +64,9 @@ const adminDatamapper = {
         updatedProduct.image,
         productId],
     };
-    const deleteSizesForProduct = {
-      text: `DELETE FROM size_to_product
-         WHERE id_product = $1;`,
-      values: [productId],
-    };
-    await client.query(updateProduct);
-    await client.query(deleteSizesForProduct);
-
-    const insertSizeAndProduct = {
-      text: `INSERT INTO size_to_product (id_size, id_product)
-             VALUES (
-               (SELECT id FROM size WHERE label = $1),
-               $2
-             );`,
-      values: [updatedProduct.size, productId],
-    };
-    await client.query(insertSizeAndProduct);
-
-    const productWithSizes = {
-      text: `SELECT product.*, size.label AS size_label
-         FROM product
-         JOIN size_to_product ON product.id = size_to_product.id_product
-         JOIN size ON size.id = size_to_product.id_size
-         WHERE product.id = $1;`,
-      values: [productId],
-    };
-    const result = await client.query(productWithSizes);
-
+    const result = await client.query(updateProduct);
     return result.rows;
   },
-
 };
 
 module.exports = adminDatamapper;
