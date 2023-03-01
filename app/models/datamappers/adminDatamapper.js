@@ -6,7 +6,7 @@ const adminDatamapper = {
     const renderAllOrders = {
       text: `SELECT
       "order"."id" AS "référence_commande" ,
-      to_char(date_trunc('day',"order"."created_at"), 'DD/MM/YYYY')AS "date_de_création",
+      to_char(date_trunc('day',"order"."created_at"), 'DD/MM/YYYY') AS "date_de_création",
       "user"."firstname",
       "user"."lastname",
       "user"."email",
@@ -14,18 +14,19 @@ const adminDatamapper = {
       "address"."city",
       "address"."address",
       "address"."zip_code",
-      "order_line"."quantity",
-      "order_line"."size",
-      "product"."title",
-      "product".price,
-      ("product"."price"*"order_line"."quantity")AS "Montant_total"
-      
-      From "order"
-      JOIN "user" ON "user"."id" = "order"."id_user"
-      JOIN "address" ON "address"."id_user"="user"."id"
-      JOIN "order_line" ON "order_line"."id_order" = "order"."id"
-      JOIN "product" ON "order_line"."id_product" = "product"."id"
-      ORDER BY "order"."created_at" DESC;`,
+      array_to_string(array_agg("order_line"."quantity"::text), ',') AS "quantités",
+      array_to_string(array_agg("order_line"."size"::text), ',') AS "tailles",
+      array_to_string(array_agg("product"."title"), ',') AS "titres",
+      array_to_string(array_agg("product".price::text), ',') AS "prix_unitaire",
+      sum("product"."price"*"order_line"."quantity") AS "Montant_total"
+    FROM "order"
+    JOIN "user" ON "user"."id" = "order"."id_user"
+    JOIN "address" ON "address"."id_user"="user"."id"
+    JOIN "order_line" ON "order_line"."id_order" = "order"."id"
+    JOIN "product" ON "order_line"."id_product" = "product"."id"
+    GROUP BY "order"."id", "order"."created_at", "user"."firstname", "user"."lastname", "user"."email",
+    "user"."phone", "address"."city", "address"."address", "address"."zip_code"
+    ORDER BY "order"."created_at" DESC;`,
     };
     const result = await client.query(renderAllOrders);
     return result.rows;
