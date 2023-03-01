@@ -4,8 +4,9 @@ const adminDatamapper = {
   // Get all orders
   async getAllOrders() {
     const renderAllOrders = {
-      text: `SELECT 
+      text: `SELECT
       "order"."id" AS "référence_commande" ,
+      to_char(date_trunc('day',"order"."created_at"), 'DD/MM/YYYY')AS "date_de_création",
       "user"."firstname",
       "user"."lastname",
       "user"."email",
@@ -23,7 +24,8 @@ const adminDatamapper = {
       JOIN "user" ON "user"."id" = "order"."id_user"
       JOIN "address" ON "address"."id_user"="user"."id"
       JOIN "order_line" ON "order_line"."id_order" = "order"."id"
-      JOIN "product" ON "order_line"."id_product" = "product"."id"`,
+      JOIN "product" ON "order_line"."id_product" = "product"."id"
+      ORDER BY "order"."created_at" DESC;`,
     };
     const result = await client.query(renderAllOrders);
     return result.rows;
