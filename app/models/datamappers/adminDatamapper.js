@@ -4,7 +4,26 @@ const adminDatamapper = {
   // Get all orders
   async getAllOrders() {
     const renderAllOrders = {
-      text: 'SELECT * FROM "order"',
+      text: `SELECT 
+      "order"."id" AS "référence_commande" ,
+      "user"."firstname",
+      "user"."lastname",
+      "user"."email",
+      "user"."phone",
+      "address"."city",
+      "address"."address",
+      "address"."zip_code",
+      "order_line"."quantity",
+      "order_line"."size",
+      "product"."title",
+      "product".price,
+      ("product"."price"*"order_line"."quantity")AS "Montant_total"
+      
+      From "order"
+      JOIN "user" ON "user"."id" = "order"."id_user"
+      JOIN "address" ON "address"."id_user"="user"."id"
+      JOIN "order_line" ON "order_line"."id_order" = "order"."id"
+      JOIN "product" ON "order_line"."id_product" = "product"."id"`,
     };
     const result = await client.query(renderAllOrders);
     return result.rows;
