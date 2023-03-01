@@ -13,4 +13,6 @@ adminRouter.patch('/products/:id([0-9]+)', middlewareAuth.isLogged, middlewareAu
 // route pour modifier un produit
 adminRouter.patch('/products/update/:id', middlewareAuth.isLogged, middlewareAuth.isAdmin, adminController.updateProduct);
 
+adminRouter.get('/order', middlewareAuth.isLogged, middlewareAuth.isAdmin, adminController.getAllOrder);
+
 module.exports = adminRouter;
