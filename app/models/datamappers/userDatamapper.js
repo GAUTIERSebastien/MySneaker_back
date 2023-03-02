@@ -112,6 +112,14 @@ const userDatamapper = {
 
     return 200;
   },
+  async hiddenUser(idUser) {
+    const preparedQuerry = {
+      text: 'UPDATE "user" SET "hidden" = true WHERE id = $1',
+      values: [idUser],
+    };
+    await pool.query(preparedQuerry);
+    return 200;
+  },
 
 };
 

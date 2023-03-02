@@ -1,5 +1,6 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
+const userDatamapper = require('../../models/datamappers/userDatamapper');
 const userServices = require('../../services/userServices');
 
 const userController = {
@@ -81,6 +82,19 @@ const userController = {
     const idUser = req.user.id;
     try {
       const result = userServices.delete(idUser);
+      if (result === 400) {
+        res.status(400).send('impossible de supprimer l\'utilisateur');
+      }
+      res.status(200).send('l\'utilisateur est bien supprimer');
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  },
+  // méthode pour supprimer un user (non définitif / seulement hidden = true)
+  hideUser: async (req, res) => {
+    const idUser = req.user.id;
+    try {
+      const result = await userDatamapper.hiddenUser(idUser);
       if (result === 400) {
         res.status(400).send('impossible de supprimer l\'utilisateur');
       }

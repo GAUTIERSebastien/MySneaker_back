@@ -15,4 +15,7 @@ router.delete('/delete', middlewareAuth.isLogged, userController.delete);
 // route pour modify un profil
 router.patch('/', middlewareAuth.isLogged, userController.modify);
 
+// route pour supprimer un profil (non définitif)
+router.patch('/hidden', middlewareAuth.isLogged, userController.hideUser);
+
 module.exports = router;
