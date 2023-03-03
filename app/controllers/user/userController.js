@@ -1,5 +1,6 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
+const userDatamapper = require('../../models/datamappers/userDatamapper');
 const userServices = require('../../services/userServices');
 
 const userController = {
@@ -17,6 +18,9 @@ const userController = {
       // si l'utilisateur a renseigné une adress email invalide un message d'erreur est renvoyé
       if (user === 400) {
         return res.status(400).send('le format de l\'email n\'est pas correct');
+      }
+      if (user === 402) {
+        return res.status(401).send('votre compte est désactivé');
       }
       // si tout est correcte on créer un token jwt
       const token = jwt.sign({
@@ -81,6 +85,19 @@ const userController = {
     const idUser = req.user.id;
     try {
       const result = userServices.delete(idUser);
+      if (result === 400) {
+        res.status(400).send('impossible de supprimer l\'utilisateur');
+      }
+      res.status(200).send('l\'utilisateur est bien supprimer');
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  },
+  // méthode pour supprimer un user (non définitif / seulement hidden = true)
+  hideUser: async (req, res) => {
+    const idUser = req.user.id;
+    try {
+      const result = await userDatamapper.hiddenUser(idUser);
       if (result === 400) {
         res.status(400).send('impossible de supprimer l\'utilisateur');
       }

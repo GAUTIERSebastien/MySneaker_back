@@ -12,6 +12,7 @@ const userDatamapper = {
       "user"."phone",
       "user"."firstname",
       "user"."lastname", 
+      "user"."hidden",
       "address"."address",
       "address"."zip_code",
       "address"."city"
@@ -110,6 +111,14 @@ const userDatamapper = {
     };
     await pool.query(preparedQuerry);
 
+    return 200;
+  },
+  async hiddenUser(idUser) {
+    const preparedQuerry = {
+      text: 'UPDATE "user" SET "hidden" = true WHERE id = $1',
+      values: [idUser],
+    };
+    await pool.query(preparedQuerry);
     return 200;
   },
 

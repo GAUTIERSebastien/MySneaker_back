@@ -16,6 +16,9 @@ const userServices = {
     if (!user) {
       return 401;
     }
+    if (user.hidden === true) {
+      return 402;
+    }
     // je compare le mot de passe avec bcrypt et celui stocker en bdd qui est crypté
     const isMatchingPassword = await bcrypt.compare(password, user.password);
     // si ça matche alors je supprime le mot de passe du json et le renvoie au controler
@@ -63,7 +66,6 @@ const userServices = {
 
   // méthode pour vérifier et modifié l'utilisateur
   async modifyUser(newInfoUser, idUser) {
-
     console.log(newInfoUser);
 
     if (isNaN(newInfoUser.zip_code) || isNaN(newInfoUser.phone)) {
