@@ -38,7 +38,7 @@ const userDatamapper = {
         VALUES
       ($1,$2,$3,$4,$5)
       RETURNING id;`,
-      values: [user.email.lowerCase(), password, user.phone, user.firstname, user.lastname],
+      values: [user.email.toLowerCase(), password, user.phone, user.firstname, user.lastname],
     };
     // je demande a la database d'envoie la requete ci-dessus
     const result = await pool.query(preparedQuerry);

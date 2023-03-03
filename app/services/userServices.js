@@ -32,7 +32,7 @@ const userServices = {
   },
   async CheckUserAndAdd(user) {
     // je vérifie si l'email est au bon format si il ne l'ai pas je renvoie un codee 400
-    if (!emailValidator.validate(user.email.lowerCase())) {
+    if (!emailValidator.validate(user.email.toLowerCase())) {
       return 400;
     }
     // je vérifie si les 2 champs email correcpondent et les mot de passe si il ne correspondent pas je renvoie un code 400

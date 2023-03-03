@@ -62,7 +62,7 @@ const adminDatamapper = {
       text: `INSERT INTO product (title, description, brand, price, image)
              VALUES ($1, $2, $3, $4, $5)
              RETURNING id;`,
-      values: [product.title, product.description, product.brand, product.price, product.image.lowerCase()],
+      values: [product.title, product.description, product.brand, product.price, product.image.toLowerCase()],
     };
     const idProduct = await client.query(createProduct);
     return idProduct;
@@ -83,7 +83,7 @@ const adminDatamapper = {
         updatedProduct.description,
         updatedProduct.brand,
         updatedProduct.price,
-        updatedProduct.image.lowerCase(),
+        updatedProduct.image.toLowerCase(),
         productId],
     };
     const result = await client.query(updateProduct);
