@@ -12,6 +12,7 @@ const userDatamapper = {
       "user"."phone",
       "user"."firstname",
       "user"."lastname", 
+      "user"."hidden",
       "address"."address",
       "address"."zip_code",
       "address"."city"

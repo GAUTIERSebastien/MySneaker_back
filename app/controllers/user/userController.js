@@ -19,6 +19,9 @@ const userController = {
       if (user === 400) {
         return res.status(400).send('le format de l\'email n\'est pas correct');
       }
+      if (user === 402) {
+        return res.status(401).send('votre compte est désactivé');
+      }
       // si tout est correcte on créer un token jwt
       const token = jwt.sign({
         id: user.id,
