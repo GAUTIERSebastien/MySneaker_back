@@ -13,6 +13,10 @@ adminRouter.patch('/products/:id([0-9]+)', middlewareAuth.isLogged, middlewareAu
 // route pour modifier un produit
 adminRouter.patch('/products/update/:id', middlewareAuth.isLogged, middlewareAuth.isAdmin, adminController.updateProduct);
 
+// route pour afficher les commandes
 adminRouter.get('/order', middlewareAuth.isLogged, middlewareAuth.isAdmin, adminController.getAllOrder);
+
+// route pour afficher une commande
+adminRouter.get('/order/:id', middlewareAuth.isLogged, middlewareAuth.isAdmin, adminController.getOneOrder);
 
 module.exports = adminRouter;
