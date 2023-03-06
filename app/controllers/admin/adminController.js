@@ -63,6 +63,24 @@ const adminController = {
       res.status(500).json(error);
     }
   },
+  // Get one order
+  async getOneOrder(req, res) {
+    try {
+      // je récupère l'id de la commande
+      const targetId = req.params.id;
+      // je demande au datamapper de me rechercher la commande
+      const foundOrder = await adminDatamapper.getOneOrderById(targetId);
+      // si il y en a pas je renvoie un code 404 ainsi qu'un message
+      if (!foundOrder) {
+        return res.status(404).send('La commande n\'existe pas!');
+      }
+      // sinon je renvoie la fiche order
+      return res.json(foundOrder);
+      // si une erreur se produit je renvoie le message d'erreur
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  },
 };
 
 module.exports = adminController;

@@ -31,6 +31,43 @@ const adminDatamapper = {
     const result = await client.query(renderAllOrders);
     return result.rows;
   },
+  // Get one order
+  getOneOrderById: async (targetId) => {
+    const preparedQuery = {
+      text: `SELECT "order"."id" AS "référence_commande" ,
+      "order_line"."id" AS "référence_ligne_order",
+      "product"."title",
+     "product"."description" ,
+      "product"."brand" ,
+      "product"."price" AS "prix_unitaire" ,
+      "product"."image" ,
+      "order_line"."quantity" ,
+      "order_line"."size",
+      ("product"."price" * "order_line"."quantity") AS "montant_total_produit",
+"user"."firstname",
+      "user"."lastname",
+      "user"."email",
+      "user"."phone",
+      "address"."city",
+      "address"."address",
+      "address"."zip_code"
+FROM "order"
+JOIN "user" ON "user"."id" = "order"."id_user"
+    JOIN "address" ON "address"."id_user"="user"."id"
+JOIN "order_line" ON "order"."id" = "order_line"."id_order"
+JOIN "product" ON "order_line"."id_product" = "product"."id"
+WHERE "order"."id" = $1;`,
+      values: [targetId],
+    };
+    const result = await client.query(preparedQuery);
+    // Return the order if it exists
+
+    if (!result.rows.length) {
+      return null;
+    }
+    // If the order does not exist
+    return result.rows;
+  },
   // Get one product
   getOneProductById: async (targetId) => {
     const preparedQuery = {
