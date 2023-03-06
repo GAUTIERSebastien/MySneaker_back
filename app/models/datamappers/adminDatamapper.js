@@ -34,29 +34,39 @@ const adminDatamapper = {
   // Get one order
   getOneOrderById: async (targetId) => {
     const preparedQuery = {
-      text: `SELECT "order".id AS "order_id",
-      "order_line.id" AS "order_line_id",
-      "product"."id" AS "product_id",
-      "product"."title" AS "product_title",
-     "product"."description" AS "product_description",
-      "product"."brand" AS "product_brand",
-      "product"."price" AS "product_price",
-      "product"."image" AS "product_image",
-      "order_line"."quantity" AS "order_line_quantity",
-      "order_line.size" AS "order_line_size"
+      text: `SELECT "order"."id" AS "référence_commande" ,
+      "order_line"."id" AS "référence_ligne_order",
+      "product"."title",
+     "product"."description" ,
+      "product"."brand" ,
+      "product"."price" AS "prix_unitaire" ,
+      "product"."image" ,
+      "order_line"."quantity" ,
+      "order_line"."size",
+      ("product"."price" * "order_line"."quantity") AS "montant_total_produit",
+"user"."firstname",
+      "user"."lastname",
+      "user"."email",
+      "user"."phone",
+      "address"."city",
+      "address"."address",
+      "address"."zip_code"
 FROM "order"
-INNER JOIN "order_line" ON "order"."id" = "order_line"."id_order"
-INNER JOIN "product" ON "order_line"."id_product" = "product.id"
-WHERE "order".id = $1;`,
+JOIN "user" ON "user"."id" = "order"."id_user"
+    JOIN "address" ON "address"."id_user"="user"."id"
+JOIN "order_line" ON "order"."id" = "order_line"."id_order"
+JOIN "product" ON "order_line"."id_product" = "product"."id"
+WHERE "order"."id" = $1;`,
       values: [targetId],
     };
     const result = await client.query(preparedQuery);
     // Return the order if it exists
-    if (result.rows.length === 1) {
-      return result.rows[0];
+
+    if (!result.rows.length) {
+      return null;
     }
     // If the order does not exist
-    return null;
+    return result.rows;
   },
   // Get one product
   getOneProductById: async (targetId) => {
