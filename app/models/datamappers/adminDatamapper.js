@@ -35,7 +35,7 @@ const adminDatamapper = {
   getOneOrderById: async (targetId) => {
     const preparedQuery = {
       text: `SELECT "order"."id" AS "référence_commande" ,
-      "order"."created_at",
+      to_char(date_trunc('day',"order"."created_at"), 'DD/MM/YYYY') AS "date_de_création",
       "order_line"."id" AS "référence_ligne_order",
       "product"."title",
      "product"."description" ,
