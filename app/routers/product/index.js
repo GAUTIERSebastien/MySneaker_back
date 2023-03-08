@@ -3,10 +3,10 @@ const productController = require('../../controllers/product/productController')
 
 const productRouter = express.Router();
 
-// route pour avoir tous les produits
+// route to display all products
 productRouter.get('/products', productController.getAllProducts);
 
-// route pour avoir un produit spécifique en fonction de son id
+// route to display one product
 productRouter.get('/products/:id([0-9]+)', productController.productDetails);
 
 module.exports = productRouter;
