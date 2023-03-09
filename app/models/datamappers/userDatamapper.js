@@ -1,8 +1,9 @@
 const pool = require('../database');
 
 const userDatamapper = {
+
+  // search for a user by email address
   async getOneUser(email) {
-    // cette requete permet de rechercher un user en fonction de son adresse email
     const preparedQuerry = {
       text: `SELECT 
       "user"."id",
@@ -21,13 +22,13 @@ const userDatamapper = {
       WHERE "user"."email" = $1`,
       values: [email],
     };
-    // j'envoie la querry au fichier database
+    // I send the querry to the database file
     const result = await pool.query(preparedQuerry);
-    // et renvoie la premiere valeur
+    // returns the first value
     return result.rows[0];
   },
   async putOneUser(user, password) {
-    // cette requete permet d'inserer un utilisateur dans la bdd
+    // insert a user in the DB
     const preparedQuerry = {
       text: `INSERT INTO "user"(
         "email",
@@ -40,14 +41,13 @@ const userDatamapper = {
       RETURNING id;`,
       values: [user.email.toLowerCase(), password, user.phone, user.firstname, user.lastname],
     };
-    // je demande a la database d'envoie la requete ci-dessus
+    // the database returns the ID of the created user
     const result = await pool.query(preparedQuerry);
-    // si touts c'est bien passé, je dois récupérer l'id de l'user qui vient d'être inseré
     return result.rows[0];
   },
 
   async addAddressFromUserId(address, idUser) {
-    // cette requète permet de créer une adresse en fonction d'un id_user
+    // create an address based on a user_id
     const preparedQuerry = {
       text: `INSERT INTO "address" 
       ("address", "zip_code", "city", "id_user")
@@ -55,12 +55,12 @@ const userDatamapper = {
        ($1,$2,$3,$4);`,
       values: [address.address, address.zip_code, address.city, idUser],
     };
-    // je demande a la database d'envoie la requete ci-dessus
+    // send request to the database
     await pool.query(preparedQuerry);
-    // si tous est ok je renvoie un code 200
+    // if ok return a code: 200
     return 200;
   },
-
+  //  modify a user
   async updateUser(user, idUser, password) {
     const preparedQuerry = {
       text: `UPDATE "user" SET
@@ -71,9 +71,7 @@ const userDatamapper = {
       Where "id"=$5`,
       values: [user.firstname, user.lastname, user.phone, password, idUser],
     };
-    // je demande a la database d'envoie la requete ci-dessus
     await pool.query(preparedQuerry);
-    // si tous est ok je renvoie un code 200
     return 200;
   },
   async updateUserWithoutPassword(user, idUser) {
@@ -85,9 +83,7 @@ const userDatamapper = {
       WHERE "id"=$4`,
       values: [user.firstname, user.lastname, user.phone, idUser],
     };
-    // je demande a la database d'envoie la requete ci-dessus
     await pool.query(preparedQuerry);
-    // si tous est ok je renvoie un code 200
     return 200;
   },
   async updateAddress(idUser, user) {
@@ -99,9 +95,7 @@ const userDatamapper = {
       WHERE "id_user" = $4 `,
       values: [user.address, user.zip_code, user.city, idUser],
     };
-    // je demande a la database d'envoie la requete ci-dessus
     await pool.query(preparedQuerry);
-    // si tous est ok je renvoie un code 200
     return 200;
   },
   async deleteUser(idUser) {
@@ -110,7 +104,6 @@ const userDatamapper = {
       values: [idUser],
     };
     await pool.query(preparedQuerry);
-
     return 200;
   },
   async hiddenUser(idUser) {

@@ -17,7 +17,6 @@ const productDatamapper = {
       values: [targetId],
     };
     const result = await client.query(preparedQuery);
-
     // Return the product if it exists
     if (result.rows.length === 1) {
       return result.rows[0];
