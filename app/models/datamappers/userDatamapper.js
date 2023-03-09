@@ -104,7 +104,6 @@ const userDatamapper = {
       values: [idUser],
     };
     await pool.query(preparedQuerry);
-
     return 200;
   },
   async hiddenUser(idUser) {

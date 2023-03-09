@@ -11,11 +11,11 @@ const adminController = {
       // je récupère le produit en fonction de son id
       const product = await productDatamapper.getOneProductById(targetId);
 
-      // je check si le produit existe dans la bdd, si il n'existe pas je renvoie un code 404
+      // s'il n'existe pas je renvoie un code 404
       if (!product) {
         res.status(404).json({ error: `Product with ID ${targetId} not found` });
       }
-      // je check si le produit est hidden si il l'est, je renvoie un code 400
+      // je check si le produit est hidden si oui, je renvoie un code 400
       if (product.hidden) {
         res.status(400).json({ error: `Product with ID ${targetId} is already hidden` });
       }
@@ -39,6 +39,7 @@ const adminController = {
       res.status(500).json({ error: 'Unable to create product' });
     }
   },
+  // Update a product
   updateProduct: async (req, res) => {
     try {
       const productId = req.params.id;
@@ -51,7 +52,7 @@ const adminController = {
       res.status(500).json({ message: 'Error updating product' });
     }
   },
-
+  // Get all oders
   getAllOrder: async (req, res) => {
     try {
       const result = await adminDatamapper.getAllOrders();

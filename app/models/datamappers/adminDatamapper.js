@@ -100,7 +100,8 @@ WHERE "order"."id" = $1;`,
       text: `INSERT INTO product (title, description, brand, price, image)
              VALUES ($1, $2, $3, $4, $5)
              RETURNING id;`,
-      values: [product.title, product.description, product.brand, product.price, product.image.toLowerCase()],
+      values: [product.title, product.description, product.brand,
+        product.price, product.image.toLowerCase()],
     };
     const idProduct = await client.query(createProduct);
     return idProduct;
